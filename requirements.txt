@@ -11,5 +11,12 @@ streamlit-card==0.0.61
 streamlit-lottie==0.0.5
 joblib==1.3.2
 python-dotenv==1.0.0
-smtplib-wrapper==0.1.2
-email-validator==2.1.0.post1 
+# smtplib is part of the Python standard library, no need for wrapper
+# smtplib-wrapper==0.1.2
+email-validator==2.1.0.post1
+# Additional dependencies that might be needed
+folium==0.15.0
+streamlit-folium==0.15.0
+openpyxl==3.1.2  # For Excel file support
+pillow==10.2.0  # For image processing
+requests==2.31.0  # For API calls 
