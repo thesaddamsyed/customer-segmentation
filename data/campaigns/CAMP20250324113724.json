@@ -1,0 +1,33 @@
+{
+  "campaign_id": "CAMP20250324113724",
+  "campaign_name": "Campaign 2025-03-24",
+  "campaign_type": "Segment-based",
+  "target_description": "At Risk",
+  "created_date": "2025-03-24 11:37:24",
+  "scheduled_date": null,
+  "executed_date": null,
+  "emails_sent": 0,
+  "emails_opened": 0,
+  "emails_clicked": 0,
+  "status": "Created",
+  "templates": {
+    "At Risk": {
+      "subject": "We Miss You, {first_name}! Special Offer Inside",
+      "body_html": "\n            <html>\n            <body>\n                <h1>Hello {first_name},</h1>\n                <p>We've noticed it's been a while since your last visit, and we miss you!</p>\n                <p>To welcome you back, we're offering a special 15% discount on your favorite {primary_category} products.</p>\n                <p>Your last purchase with us was on {last_purchase_date:%B %d, %Y}. We'd love to see you again soon!</p>\n                <p>Best regards,<br>The Mall Team</p>\n            </body>\n            </html>\n            "
+    }
+  },
+  "target_data": {
+    "target_type": "Segment-based",
+    "count": 10,
+    "details": "At Risk",
+    "customer_ids": []
+  },
+  "email_config": {
+    "host": "smtp.example.com",
+    "port": 587,
+    "username": "your_email@example.com",
+    "password": "ggggggggggggh",
+    "test_mode": true,
+    "max_emails": 10
+  }
+}

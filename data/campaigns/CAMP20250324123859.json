@@ -1,0 +1,35 @@
+{
+  "campaign_id": "CAMP20250324123859",
+  "campaign_name": "Test Campaign 2025-03-24 12:38:59",
+  "campaign_type": "Test",
+  "target_description": "Single test customer",
+  "created_date": "2025-03-24 12:38:59",
+  "scheduled_date": null,
+  "executed_date": null,
+  "emails_sent": 0,
+  "emails_opened": 0,
+  "emails_clicked": 0,
+  "status": "Failed",
+  "templates": {
+    "custom": {
+      "subject": "Special Offer for {first_name}!",
+      "body_html": "\n        <html>\n        <body>\n            <h1>Hello {first_name},</h1>\n            <p>We have a special offer just for you as a <b>{segment_name}</b> customer!</p>\n            <p>Visit our store to enjoy exclusive discounts on {primary_category} products.</p>\n            <p>Check out our <a href=\"https://www.example.com/products\">latest products</a>!</p>\n            <p>Best regards,<br>The Mall Team</p>\n        </body>\n        </html>\n        "
+    }
+  },
+  "target_data": {
+    "target_type": "Test",
+    "count": 1,
+    "details": "Test email",
+    "customer_ids": [
+      "ad61375d-e637-466c-876b-efae82c0cc65"
+    ]
+  },
+  "email_config": {
+    "host": "smtp.gmail.com",
+    "port": 465,
+    "username": "himowahck@gmail.com",
+    "password": "ebwbfbragqzrjhuf",
+    "test_mode": false,
+    "max_emails": 1
+  }
+}

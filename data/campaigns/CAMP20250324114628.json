@@ -1,0 +1,33 @@
+{
+  "campaign_id": "CAMP20250324114628",
+  "campaign_name": "Campaign 2025-03-24",
+  "campaign_type": "Segment-based",
+  "target_description": "Occasional",
+  "created_date": "2025-03-24 11:46:28",
+  "scheduled_date": null,
+  "executed_date": null,
+  "emails_sent": 0,
+  "emails_opened": 0,
+  "emails_clicked": 0,
+  "status": "Created",
+  "templates": {
+    "Occasional": {
+      "subject": "Special Offers on {primary_category} Products, {first_name}!",
+      "body_html": "\n            <html>\n            <body>\n                <h1>Hello {first_name},</h1>\n                <p>We have some exciting offers that we think you'll love!</p>\n                <p>Since you've shown interest in {primary_category}, we wanted to let you know about our current promotions:</p>\n                <ul>\n                    <li>Seasonal discounts on {primary_category} products</li>\n                    <li>Buy one, get one 50% off on selected items</li>\n                    <li>Limited-time offers on new arrivals</li>\n                </ul>\n                <p>We hope to see you soon!</p>\n                <p>Best regards,<br>The Mall Team</p>\n            </body>\n            </html>\n            "
+    }
+  },
+  "target_data": {
+    "target_type": "Segment-based",
+    "count": 10,
+    "details": "Occasional",
+    "customer_ids": []
+  },
+  "email_config": {
+    "host": "smtp.example.com",
+    "port": 587,
+    "username": "your_email@example.com",
+    "password": "fsdfasdas",
+    "test_mode": true,
+    "max_emails": 10
+  }
+}
