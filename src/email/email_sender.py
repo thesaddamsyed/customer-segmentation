@@ -432,7 +432,7 @@ class EmailTemplateManager:
                 <ul>
                     <li>Early access to our new {primary_category} collection</li>
                     <li>Special 20% discount on your next purchase</li>
-                    <li>Complimentary gift with purchases over $100</li>
+                    <li>Complimentary gift with purchases over ₹100</li>
                 </ul>
                 <p>Thank you for your continued loyalty. We truly appreciate your business!</p>
                 <p>Best regards,<br>The Mall Team</p>
@@ -468,7 +468,7 @@ class EmailTemplateManager:
                 <p>Here are some benefits you might enjoy:</p>
                 <ul>
                     <li>10% off your next purchase with code WELCOME10</li>
-                    <li>Free shipping on orders over $50</li>
+                    <li>Free shipping on orders over ₹50</li>
                     <li>Exclusive access to new arrivals</li>
                 </ul>
                 <p>We hope to see you again soon!</p>

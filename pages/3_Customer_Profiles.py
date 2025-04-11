@@ -1030,7 +1030,7 @@ def main():
         with metric_col2:
             st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-value">${customer.get('total_spend', 0):.2f}</div>
+                <div class="metric-value">₹{customer.get('total_spend', 0):.2f}</div>
                 <div class="metric-label">Total Spend</div>
             </div>
             """, unsafe_allow_html=True)
@@ -1038,7 +1038,7 @@ def main():
         with metric_col3:
             st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-value">${customer.get('average_transaction_value', 0):.2f}</div>
+                <div class="metric-value">₹{customer.get('average_transaction_value', 0):.2f}</div>
                 <div class="metric-label">Avg. Transaction Value</div>
             </div>
             """, unsafe_allow_html=True)
@@ -1069,7 +1069,7 @@ def main():
                 # Format numeric columns
                 for col in ['price', 'total_amount']:
                     if col in display_cols:
-                        customer_transactions[col] = customer_transactions[col].map('${:.2f}'.format)
+                        customer_transactions[col] = customer_transactions[col].map('₹{:.2f}'.format)
                 
                 # Display transactions
                 st.dataframe(customer_transactions[display_cols], use_container_width=True)
@@ -1140,7 +1140,7 @@ def main():
                             
                             fig.update_layout(
                                 xaxis_title='Month',
-                                yaxis_title='Total Spend ($)',
+                                yaxis_title='Total Spend (₹)',
                                 xaxis=dict(tickangle=45)
                             )
                             
@@ -1230,7 +1230,7 @@ def main():
                 for category, spend, pct in zip(categories, category_spend.values, category_pct.values):
                     # Format the spend value based on its type
                     if isinstance(spend, (int, float)):
-                        spend_formatted = f"${spend:.2f}"
+                        spend_formatted = f"₹{spend:.2f}"
                     else:
                         spend_formatted = str(spend)
                     
@@ -1281,7 +1281,7 @@ def main():
                     if spend_col in customer:
                         category_data.append({
                             'Category': cat_col.replace('pct_', '').title(),
-                            'Spend': f"${customer[spend_col]:.2f}",
+                            'Spend': f"₹{customer[spend_col]:.2f}",
                             'Percentage': f"{customer[cat_col]:.1f}%"
                         })
                 

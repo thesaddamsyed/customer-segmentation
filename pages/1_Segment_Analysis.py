@@ -143,7 +143,7 @@ def generate_segment_insights(segment_profiles, segment_name):
     if segment_name == 'VIP':
         insights.append({
             'title': 'High Value Customers',
-            'text': f"VIP customers spend ${profile['total_spend']:.2f} on average, which is {(profile['total_spend']/avg_spend - 1)*100:.1f}% higher than the average customer."
+            'text': f"VIP customers spend ₹{profile['total_spend']:.2f} on average, which is {(profile['total_spend']/avg_spend - 1)*100:.1f}% higher than the average customer."
         })
         insights.append({
             'title': 'Frequent Shoppers',
@@ -161,7 +161,7 @@ def generate_segment_insights(segment_profiles, segment_name):
         })
         insights.append({
             'title': 'Historical Value',
-            'text': f"Despite their inactivity, these customers have historically spent ${profile['total_spend']:.2f} on average, making them valuable to retain."
+            'text': f"Despite their inactivity, these customers have historically spent ₹{profile['total_spend']:.2f} on average, making them valuable to retain."
         })
         insights.append({
             'title': 'Win-back Strategy',
@@ -189,7 +189,7 @@ def generate_segment_insights(segment_profiles, segment_name):
         })
         insights.append({
             'title': 'Moderate Spending',
-            'text': f"These customers spend ${profile['average_transaction_value']:.2f} per transaction, close to the overall average of ${avg_transaction:.2f}."
+            'text': f"These customers spend ₹{profile['average_transaction_value']:.2f} per transaction, close to the overall average of ₹{avg_transaction:.2f}."
         })
         insights.append({
             'title': 'Engagement Strategy',
@@ -203,7 +203,7 @@ def generate_segment_insights(segment_profiles, segment_name):
         })
         insights.append({
             'title': 'Lower Spending',
-            'text': f"These customers spend ${profile['total_spend']:.2f} on average, below the overall average of ${avg_spend:.2f}."
+            'text': f"These customers spend ₹{profile['total_spend']:.2f} on average, below the overall average of ₹{avg_spend:.2f}."
         })
         insights.append({
             'title': 'Activation Strategy',
@@ -217,7 +217,7 @@ def generate_segment_insights(segment_profiles, segment_name):
         })
         insights.append({
             'title': 'Spending Behavior',
-            'text': f"Customers in this segment spend ${profile['total_spend']:.2f} on average across {profile['transaction_count']:.1f} transactions."
+            'text': f"Customers in this segment spend ₹{profile['total_spend']:.2f} on average across {profile['transaction_count']:.1f} transactions."
         })
         insights.append({
             'title': 'Engagement Strategy',

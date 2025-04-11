@@ -13,7 +13,7 @@
   "templates": {
     "VIP": {
       "subject": "Exclusive VIP Offers Just for You, {first_name}!",
-      "body_html": "\n            <html>\n            <body>\n                <h1>Hello {first_name},</h1>\n                <p>As one of our most valued customers, we're excited to share these exclusive VIP offers with you:</p>\n                <ul>\n                    <li>Early access to our new {primary_category} collection</li>\n                    <li>Special 20% discount on your next purchase</li>\n                    <li>Complimentary gift with purchases over $100</li>\n                </ul>\n                <p>Thank you for your continued loyalty. We truly appreciate your business!</p>\n                <p>Best regards,<br>The Mall Team</p>\n            </body>\n            </html>\n            "
+      "body_html": "\n            <html>\n            <body>\n                <h1>Hello {first_name},</h1>\n                <p>As one of our most valued customers, we're excited to share these exclusive VIP offers with you:</p>\n                <ul>\n                    <li>Early access to our new {primary_category} collection</li>\n                    <li>Special 20% discount on your next purchase</li>\n                    <li>Complimentary gift with purchases over ₹100</li>\n                </ul>\n                <p>Thank you for your continued loyalty. We truly appreciate your business!</p>\n                <p>Best regards,<br>The Mall Team</p>\n            </body>\n            </html>\n            "
     }
   },
   "target_data": {

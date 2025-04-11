@@ -408,7 +408,7 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                                             spending_data,
                                             nbins=20,
                                             title=f"Spending Distribution - {display_category} Customers",
-                                            labels={"value": "Spending Amount ($)", "count": "Number of Customers"}
+                                            labels={"value": "Spending Amount (₹)", "count": "Number of Customers"}
                                         )
                                         st.plotly_chart(fig, use_container_width=True)
                 else:

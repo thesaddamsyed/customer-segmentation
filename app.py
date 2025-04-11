@@ -189,9 +189,9 @@ def main():
         
         # Format metrics
         total_customers = f"{metrics.get('total_customers', 0):,.0f}"
-        total_revenue = f"${metrics.get('total_revenue', 0):,.2f}"
-        avg_clv = f"${metrics.get('avg_customer_lifetime_value', 0):,.2f}"
-        avg_transaction = f"${metrics.get('avg_transaction_value', 0):,.2f}"
+        total_revenue = f"₹{metrics.get('total_revenue', 0):,.2f}"
+        avg_clv = f"₹{metrics.get('avg_customer_lifetime_value', 0):,.2f}"
+        avg_transaction = f"₹{metrics.get('avg_transaction_value', 0):,.2f}"
         
         # Display metrics one by one instead of a grid for better mobile responsiveness
         st.markdown(f"""
@@ -269,15 +269,15 @@ def main():
     
     # Rename columns for better display
     display_profiles.columns = ['Segment Name', 'Customer Count', 'Customer %', 
-                               'Recency (Days)', 'Transaction Count', 'Total Spend ($)', 
-                               'Avg. Transaction ($)', 'Purchase Frequency']
+                               'Recency (Days)', 'Transaction Count', 'Total Spend (₹)', 
+                               'Avg. Transaction (₹)', 'Purchase Frequency']
     
     # Format numeric columns
     display_profiles['Customer %'] = display_profiles['Customer %'].round(1)
     display_profiles['Recency (Days)'] = display_profiles['Recency (Days)'].round(0).astype(int)
     display_profiles['Transaction Count'] = display_profiles['Transaction Count'].round(1)
-    display_profiles['Total Spend ($)'] = display_profiles['Total Spend ($)'].round(2)
-    display_profiles['Avg. Transaction ($)'] = display_profiles['Avg. Transaction ($)'].round(2)
+    display_profiles['Total Spend (₹)'] = display_profiles['Total Spend (₹)'].round(2)
+    display_profiles['Avg. Transaction (₹)'] = display_profiles['Avg. Transaction (₹)'].round(2)
     display_profiles['Purchase Frequency'] = display_profiles['Purchase Frequency'].round(2)
     
     # Display profiles with scrolling enabled
