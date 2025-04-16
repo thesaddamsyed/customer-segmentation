@@ -410,6 +410,12 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                                             title=f"Spending Distribution - {display_category} Customers",
                                             labels={"value": "Spending Amount (₹)", "count": "Number of Customers"}
                                         )
+                                        
+                                        # Add transparent legend background
+                                        fig.update_layout(
+                                            legend=dict(bgcolor='rgba(0,0,0,0)')
+                                        )
+                                        
                                         st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.error("Primary category information not found in customer data")

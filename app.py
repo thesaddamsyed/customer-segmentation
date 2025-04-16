@@ -286,7 +286,7 @@ def main():
     
     # Display geographic distribution in a container
     st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-    st.markdown('<h2 class="sub-header">Customer Geographic Distribution</h2>', unsafe_allow_html=True)
+    # st.markdown('<h2 class="sub-header">Customer Geographic Distribution</h2>', unsafe_allow_html=True)
     
     # Prepare data for the location map
     map_data = pd.DataFrame(index=customer_segments.index)

@@ -321,6 +321,11 @@ def main():
                                     labels={'timestamp': 'Date', 'opens': 'Number of Opens'}
                                 )
                                 
+                                # Add transparent legend background
+                                fig.update_layout(
+                                    legend=dict(bgcolor='rgba(0,0,0,0)')
+                                )
+                                
                                 st.plotly_chart(fig, use_container_width=True)
                             
                             # Display clicks over time
@@ -340,6 +345,11 @@ def main():
                                     y='clicks',
                                     title="Email Clicks Over Time",
                                     labels={'timestamp': 'Date', 'clicks': 'Number of Clicks'}
+                                )
+                                
+                                # Add transparent legend background
+                                fig.update_layout(
+                                    legend=dict(bgcolor='rgba(0,0,0,0)')
                                 )
                                 
                                 st.plotly_chart(fig, use_container_width=True)
@@ -422,6 +432,11 @@ def main():
                         labels={'timestamp': 'Date', 'opens': 'Number of Opens'}
                     )
                     
+                    # Add transparent legend background
+                    fig.update_layout(
+                        legend=dict(bgcolor='rgba(0,0,0,0)')
+                    )
+                    
                     st.plotly_chart(fig, use_container_width=True)
                 
                 # Display clicks over time
@@ -441,6 +456,11 @@ def main():
                         y='clicks',
                         title="Email Clicks Over Time (All Campaigns)",
                         labels={'timestamp': 'Date', 'clicks': 'Number of Clicks'}
+                    )
+                    
+                    # Add transparent legend background
+                    fig.update_layout(
+                        legend=dict(bgcolor='rgba(0,0,0,0)')
                     )
                     
                     st.plotly_chart(fig, use_container_width=True)

@@ -246,7 +246,8 @@ def create_category_preference_chart(customer_features: pd.DataFrame, segment_co
             fig.update_layout(
                 xaxis_title='Segment',
                 yaxis_title='Number of Customers',
-                legend_title='Primary Category'
+                legend_title='Primary Category',
+                legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
             )
             
             return fig
@@ -279,7 +280,8 @@ def create_category_preference_chart(customer_features: pd.DataFrame, segment_co
     fig.update_layout(
         xaxis_title='Segment',
         yaxis_title='Percentage of Spend',
-        legend_title='Category'
+        legend_title='Category',
+        legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
     )
     
     return fig
@@ -359,7 +361,8 @@ def create_spending_trend_chart(transactions_df: pd.DataFrame, segment_column: O
     fig.update_layout(
         xaxis_title='Month',
         yaxis_title='Total Spend',
-        xaxis=dict(tickangle=45)
+        xaxis=dict(tickangle=45),
+        legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
     )
     
     return fig
@@ -398,7 +401,8 @@ def create_payment_method_chart(transactions_df: pd.DataFrame, segment_column: O
         fig.update_layout(
             xaxis_title='Segment',
             yaxis_title='Number of Transactions',
-            legend_title='Payment Method'
+            legend_title='Payment Method',
+            legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
         )
     else:
         # Count transactions by payment method
@@ -455,7 +459,8 @@ def create_mall_distribution_chart(transactions_df: pd.DataFrame, segment_column
         fig.update_layout(
             xaxis_title='Segment',
             yaxis_title='Number of Transactions',
-            legend_title='Shopping Mall'
+            legend_title='Shopping Mall',
+            legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
         )
     else:
         # Count transactions by mall
@@ -508,7 +513,8 @@ def create_age_distribution_chart(customer_features: pd.DataFrame, segment_colum
     fig.update_layout(
         xaxis_title='Age',
         yaxis_title='Number of Customers',
-        legend_title='Segment'
+        legend_title='Segment',
+        legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
     )
     
     return fig
@@ -594,7 +600,8 @@ def create_city_distribution_chart(customer_features: pd.DataFrame, segment_colu
     fig.update_layout(
         xaxis_title='City',
         yaxis_title='Number of Customers',
-        legend_title='Segment'
+        legend_title='Segment',
+        legend=dict(bgcolor='rgba(0,0,0,0)')  # Add transparent legend background
     )
     
     return fig

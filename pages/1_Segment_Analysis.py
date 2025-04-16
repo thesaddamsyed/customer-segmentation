@@ -319,43 +319,43 @@ def main():
     
     with col1:
         # RFM Heatmap
-        st.markdown('<h3>RFM Analysis</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>RFM Analysis</h3>', unsafe_allow_html=True)
         fig = create_rfm_heatmap(filtered_customers)
         st.plotly_chart(fig, use_container_width=True, key="rfm_heatmap")
         
         # Category Preferences
-        st.markdown('<h3>Category Preferences</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>Category Preferences</h3>', unsafe_allow_html=True)
         fig = create_category_preference_chart(filtered_customers)
         st.plotly_chart(fig, use_container_width=True, key="category_preferences")
         
         # Age Distribution
-        st.markdown('<h3>Age Distribution</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>Age Distribution</h3>', unsafe_allow_html=True)
         fig = create_age_distribution_chart(filtered_customers)
         st.plotly_chart(fig, use_container_width=True, key="age_distribution")
     
     with col2:
         # Spending Trends
-        st.markdown('<h3>Spending Trends</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>Spending Trends</h3>', unsafe_allow_html=True)
         fig = create_spending_trend_chart(filtered_transactions)
         st.plotly_chart(fig, use_container_width=True, key="spending_trends")
         
         # Payment Method Preferences
-        st.markdown('<h3>Payment Method Preferences</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>Payment Method Preferences</h3>', unsafe_allow_html=True)
         fig = create_payment_method_chart(filtered_transactions)
         st.plotly_chart(fig, use_container_width=True, key="payment_methods")
         
         # Mall Distribution
-        st.markdown('<h3>Shopping Mall Distribution</h3>', unsafe_allow_html=True)
+        # st.markdown('<h3>Shopping Mall Distribution</h3>', unsafe_allow_html=True)
         fig = create_mall_distribution_chart(filtered_transactions)
         st.plotly_chart(fig, use_container_width=True, key="mall_distribution")
     
     # City Distribution (full width)
-    st.markdown('<h3>Customer Distribution by City</h3>', unsafe_allow_html=True)
+    # st.markdown('<h3>Customer Distribution by City</h3>', unsafe_allow_html=True)
     fig = create_city_distribution_chart(filtered_customers)
     st.plotly_chart(fig, use_container_width=True, key="city_distribution")
     
     # Geographic Distribution Map (full width)
-    st.markdown('<h3>Geographic Distribution</h3>', unsafe_allow_html=True)
+    # st.markdown('<h3>Geographic Distribution</h3>', unsafe_allow_html=True)
     
     # Prepare data for the location map
     map_data = pd.DataFrame(index=filtered_customers.index)
