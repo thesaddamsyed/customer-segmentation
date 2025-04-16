@@ -273,4 +273,46 @@ class EmailTracker:
         return {
             'emails_opened': unique_opens,
             'emails_clicked': unique_clicks
-        } 
+        }
+
+    def track_email_sent(self, campaign_id: str, customer_id: str = None) -> bool:
+        """
+        Track when an email is sent successfully.
+        
+        Args:
+            campaign_id: Campaign ID
+            customer_id: Customer ID
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Create sends file if it doesn't exist
+            sends_file = os.path.join(self.data_dir, "sends.csv")
+            if not os.path.exists(sends_file):
+                sends_df = pd.DataFrame(columns=[
+                    'campaign_id', 'customer_id', 'timestamp'
+                ])
+                sends_df.to_csv(sends_file, index=False)
+            
+            # Load existing sends
+            sends_df = pd.read_csv(sends_file)
+            
+            # Create new row
+            new_row = pd.DataFrame({
+                'campaign_id': [campaign_id],
+                'customer_id': [customer_id if customer_id else "unknown"],
+                'timestamp': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
+            })
+            
+            # Append new row
+            sends_df = pd.concat([sends_df, new_row], ignore_index=True)
+            
+            # Save updated CSV
+            sends_df.to_csv(sends_file, index=False)
+            
+            return True
+        
+        except Exception as e:
+            print(f"Error tracking email sent: {str(e)}")
+            return False 

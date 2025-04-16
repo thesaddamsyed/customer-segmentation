@@ -1,0 +1,28 @@
+{
+  "emails_sent": 3,
+  "emails_opened": 0,
+  "emails_clicked": 0,
+  "test_mode": false,
+  "details": [
+    {
+      "segment": "New",
+      "success": 0,
+      "failed": 0
+    },
+    {
+      "segment": "Regular",
+      "success": 1,
+      "failed": 0
+    },
+    {
+      "segment": "Occasional",
+      "success": 1,
+      "failed": 0
+    },
+    {
+      "segment": "VIP",
+      "success": 1,
+      "failed": 0
+    }
+  ]
+}

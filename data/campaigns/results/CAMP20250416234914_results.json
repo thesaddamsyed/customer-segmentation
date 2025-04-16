@@ -1,0 +1,28 @@
+{
+  "emails_sent": 5,
+  "emails_opened": 0,
+  "emails_clicked": 0,
+  "test_mode": true,
+  "details": [
+    {
+      "email": "robert.jones@yahoo.com",
+      "status": "simulated"
+    },
+    {
+      "email": "linda.johnson@outlook.com",
+      "status": "simulated"
+    },
+    {
+      "email": "michael.jones@gmail.com",
+      "status": "simulated"
+    },
+    {
+      "email": "thesaddamsyed@gmail.com",
+      "status": "simulated"
+    },
+    {
+      "email": "mary.williams@hotmail.com",
+      "status": "simulated"
+    }
+  ]
+}

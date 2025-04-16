@@ -23,7 +23,7 @@ class EmailSender:
     Class for sending automated emails to customers.
     """
     
-    def __init__(self, host="localhost", port=25, username="", password="", enable_tracking=True):
+    def __init__(self, host="localhost", port=25, username="", password="", enable_tracking=True, provider=None):
         """
         Initialize the email sender with SMTP settings.
         
@@ -33,17 +33,55 @@ class EmailSender:
             username (str): SMTP username
             password (str): SMTP password
             enable_tracking (bool): Whether to enable tracking of email opens and clicks
+            provider (str, optional): Email provider (gmail, outlook, yahoo, etc.) to auto-configure settings
         """
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
+        # Auto-configure based on provider if specified
+        if provider:
+            self._configure_provider(provider, username, password)
+        else:
+            self.host = host
+            self.port = port
+            self.username = username
+            self.password = password
+            
         self.enable_tracking = enable_tracking
         self.tracker = EmailTracker() if enable_tracking else None
         self.logger = self._setup_logger()
         
         # Determine connection type based on port
         self.use_ssl = (self.port == 465)
+        
+        # Log connection type for debugging
+        self.logger.info(f"Initializing EmailSender with {self.host}:{self.port} {'using SSL' if self.use_ssl else 'using TLS'}")
+        
+    def _configure_provider(self, provider, username, password):
+        """
+        Configure email settings based on common providers.
+        
+        Args:
+            provider (str): Email provider (gmail, outlook, yahoo, etc.)
+            username (str): Email username
+            password (str): Email password
+        """
+        provider = provider.lower()
+        self.username = username
+        self.password = password
+        
+        if provider == 'gmail':
+            self.host = 'smtp.gmail.com'
+            self.port = 465  # Use SSL by default for Gmail
+            self.use_ssl = True
+            self.logger.info("Configured for Gmail with SSL")
+        elif provider == 'outlook' or provider == 'hotmail':
+            self.host = 'smtp.office365.com'
+            self.port = 587
+            self.use_ssl = False
+        elif provider == 'yahoo':
+            self.host = 'smtp.mail.yahoo.com'
+            self.port = 587
+            self.use_ssl = False
+        else:
+            raise ValueError(f"Unsupported provider: {provider}. Please configure manually.")
     
     def _setup_logger(self):
         """Set up a logger for the email sender."""
@@ -58,6 +96,102 @@ class EmailSender:
             logger.addHandler(handler)
         
         return logger
+    
+    def test_connection(self, debug=False):
+        """
+        Test the SMTP connection without sending an email.
+        
+        Args:
+            debug (bool): Enable detailed debugging output
+            
+        Returns:
+            bool: True if connection successful, False otherwise
+        """
+        try:
+            self.logger.info(f"Testing connection to {self.host}:{self.port}")
+            
+            if debug:
+                print(f"Connection parameters:")
+                print(f"Host: {self.host}")
+                print(f"Port: {self.port}")
+                print(f"Username: {self.username}")
+                print(f"Password length: {len(self.password) if self.password else 0}")
+                print(f"SSL: {self.use_ssl}")
+            
+            if self.use_ssl:
+                # Use SSL connection (port 465)
+                if debug:
+                    print("Creating SMTP_SSL connection...")
+                server = smtplib.SMTP_SSL(self.host, self.port)
+            else:
+                # Use TLS connection (usually port 587)
+                if debug:
+                    print("Creating SMTP connection with STARTTLS...")
+                server = smtplib.SMTP(self.host, self.port)
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+            
+            # Login if credentials provided
+            if self.username and self.password:
+                self.logger.info(f"Authenticating as {self.username}")
+                if debug:
+                    print(f"Authenticating as {self.username}...")
+                # Strip any whitespace from password that might have been accidentally included
+                clean_password = self.password.strip()
+                server.login(self.username, clean_password)
+            
+            # Close connection
+            server.quit()
+            
+            self.logger.info("Connection test successful")
+            if debug:
+                print("Connection test successful!")
+            return True
+            
+        except smtplib.SMTPAuthenticationError as e:
+            self._handle_authentication_error(e)
+            if debug:
+                print(f"Authentication error: {str(e)}")
+                print(f"Username used: {self.username}")
+                print(f"First character of password: {self.password[0] if self.password else 'None'}")
+                print(f"Last character of password: {self.password[-1] if self.password else 'None'}")
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"Connection test failed: {str(e)}")
+            print(f"Connection test failed: {str(e)}")
+            if debug:
+                import traceback
+                traceback.print_exc()
+            return False
+    
+    def _handle_authentication_error(self, error):
+        """
+        Handle authentication errors with helpful messages.
+        
+        Args:
+            error: The SMTP authentication error
+        """
+        self.logger.error(f"SMTP Authentication Error: {str(error)}")
+        
+        if "gmail" in self.host.lower():
+            self.logger.warning("Gmail authentication failed - check the following:")
+            self.logger.warning("1. You must use an App Password with Gmail when 2FA is enabled")
+            self.logger.warning("2. Create an App Password at https://myaccount.google.com/apppasswords")
+            self.logger.warning("3. Make sure to enter the App Password with no spaces")
+            self.logger.warning("4. If you don't have 2FA enabled, you need to enable 'Less secure app access'")
+            
+            print("\n===== Gmail Authentication Troubleshooting =====")
+            print("1. Make sure 2-Step Verification is enabled on your Google account")
+            print("2. Generate an App Password at: https://myaccount.google.com/apppasswords")
+            print("3. Use the App Password (with no spaces) instead of your regular password")
+            print("4. Check that your Gmail address is entered correctly")
+            print("5. If you're using a Google Workspace account, ensure API access is enabled")
+            print("\nError details:", str(error))
+        else:
+            print(f"SMTP Authentication Error: {str(error)}")
+            print("Check your username and password.")
     
     def _validate_email(self, email):
         """
@@ -138,7 +272,7 @@ class EmailSender:
         
         return html_content
     
-    def send_email(self, to_email, subject, body_html, campaign_id=None, customer_id=None):
+    def send_email(self, to_email, subject, body_html, body_text=None, campaign_id=None, customer_id=None):
         """
         Send an email to a recipient with HTML content and optional tracking.
         
@@ -146,6 +280,7 @@ class EmailSender:
             to_email (str): Recipient email address
             subject (str): Email subject
             body_html (str): HTML content of the email
+            body_text (str, optional): Plain text alternative
             campaign_id (str, optional): Campaign ID for tracking
             customer_id (str, optional): Customer ID for tracking
             
@@ -172,13 +307,15 @@ class EmailSender:
             if self.enable_tracking and self.tracker and campaign_id and customer_id:
                 try:
                     self.logger.info(f"Adding tracking for campaign {campaign_id}, customer {customer_id}")
-                    body_html = self.tracker.add_tracking_to_email(
-                        body_html, campaign_id, customer_id
-                    )
+                    body_html = self._add_tracking(campaign_id, customer_id, to_email, body_html)
                 except Exception as e:
                     self.logger.warning(f"Failed to add tracking to email: {str(e)}")
             
             # Attach HTML part
+            if body_text:
+                text_part = MIMEText(body_text, 'plain')
+                msg.attach(text_part)
+                
             html_part = MIMEText(body_html, 'html')
             msg.attach(html_part)
             
@@ -188,9 +325,11 @@ class EmailSender:
             try:
                 if self.use_ssl:
                     # Use SSL connection (port 465)
+                    self.logger.info("Creating SMTP_SSL connection")
                     server = smtplib.SMTP_SSL(self.host, self.port)
                 else:
                     # Use TLS connection (port 587)
+                    self.logger.info("Creating SMTP connection with STARTTLS")
                     server = smtplib.SMTP(self.host, self.port)
                     server.ehlo()
                     server.starttls()
@@ -199,7 +338,9 @@ class EmailSender:
                 # Login if credentials provided
                 if self.username and self.password:
                     self.logger.info(f"Authenticating as {self.username}")
-                    server.login(self.username, self.password)
+                    # Strip any whitespace from password that might have been accidentally included
+                    clean_password = self.password.strip()
+                    server.login(self.username, clean_password)
                 
                 # Send email
                 self.logger.info(f"Sending email to {to_email}")
@@ -211,16 +352,17 @@ class EmailSender:
                 
                 # Track email sent event if tracking enabled
                 if self.enable_tracking and self.tracker and campaign_id and customer_id:
-                    self.tracker.track_email_sent(campaign_id, customer_id)
+                    try:
+                        self.tracker.track_email_sent(campaign_id, customer_id)
+                    except Exception as e:
+                        # Log the error but don't affect the success status
+                        self.logger.warning(f"Failed to track email sent: {str(e)}")
+                        print(f"Note: Email was sent successfully, but tracking failed: {str(e)}")
                 
                 return True
                 
             except smtplib.SMTPAuthenticationError as e:
-                self.logger.error(f"SMTP Authentication Error: {str(e)}")
-                if "gmail" in self.host.lower():
-                    self.logger.warning("Gmail requires an App Password if 2-Step Verification is enabled")
-                print(f"SMTP Authentication Error: {str(e)}")
-                print("If using Gmail, make sure to use an App Password and not your regular password.")
+                self._handle_authentication_error(e)
                 return False
                 
             except smtplib.SMTPSenderRefused as e:

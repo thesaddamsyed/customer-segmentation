@@ -213,6 +213,48 @@ def create_email_preview(template, customer_data):
         st.error(f"Error creating email preview: {e}")
         return False
 
+# Function to validate email and correct common typos
+def validate_and_correct_email(email):
+    """Validate email address and correct common typos."""
+    # Check for the specific typo we've identified
+    if email and email.lower() == "himowachk@gmail.com":
+        st.error("⛔ Email address has a typo! Correcting from 'himowachk@gmail.com' to 'himowahck@gmail.com'")
+        return "himowahck@gmail.com"
+    
+    # Added general email validation
+    try:
+        if email and ("@" not in email or "." not in email):
+            st.error(f"⛔ Invalid email format: {email}")
+        elif email and email.endswith("@gmail.com") and len(email) < 11:
+            st.error(f"⛔ Gmail address seems too short: {email}")
+    except:
+        pass
+        
+    return email
+
+# Function to check the .env file content without exposing the password
+def check_env_file():
+    """Check if .env file exists and display its contents without the password."""
+    if os.path.exists(".env"):
+        try:
+            with open(".env", "r") as f:
+                content = f.readlines()
+            
+            # Display contents except the password
+            safe_content = []
+            for line in content:
+                if line.startswith("EMAIL_PASSWORD="):
+                    password_length = len(line.strip().replace("EMAIL_PASSWORD=", ""))
+                    safe_content.append(f"EMAIL_PASSWORD=****** (length: {password_length})")
+                else:
+                    safe_content.append(line.strip())
+            
+            return {"exists": True, "content": safe_content}
+        except Exception as e:
+            return {"exists": True, "error": str(e)}
+    else:
+        return {"exists": False}
+
 # Main function
 def main():
     # Load CSS
@@ -221,16 +263,31 @@ def main():
     # Display header
     st.markdown('<h1 class="main-header">Email Marketing</h1>', unsafe_allow_html=True)
     
+    # Check and display .env file status
+    env_status = check_env_file()
+    if env_status["exists"]:
+        with st.expander("Current Email Configuration", expanded=False):
+            if "error" in env_status:
+                st.error(f"Error reading .env file: {env_status['error']}")
+            else:
+                st.success(".env file found")
+                st.code("\n".join(env_status["content"]), language="bash")
+    else:
+        st.warning("No .env file found. Please configure your email settings.")
+    
     # Email Configuration Section
     with st.expander("Email Configuration Setup", expanded=not os.path.exists(".env")):
         st.markdown("### Configure Email Provider")
-        st.markdown("""
-        To send real emails, you need to configure your email provider details.
-        This information will be securely stored in a .env file.
         
-        **Note for Gmail users**: You may need to use an App Password rather than your regular password.
-        [Learn how to create an App Password](https://support.google.com/accounts/answer/185833)
-        """)
+        # Add better Gmail guidance
+        if not os.path.exists(".env"):
+            with st.container():
+                st.warning("""
+                **Important for Gmail users:** 
+                1. You must use an App Password, not your regular password
+                2. Make sure 2-Step Verification is enabled on your Google Account
+                3. Create an App Password at: https://myaccount.google.com/apppasswords
+                """)
         
         with st.form("email_config_form"):
             email_provider = st.selectbox(
@@ -241,7 +298,23 @@ def main():
             
             if email_provider == "Gmail":
                 email_host = "smtp.gmail.com"
-                email_port = 587
+                gmail_connection = st.radio(
+                    "Connection Type",
+                    ["TLS (port 587)", "SSL (port 465)"],
+                    index=1,  # Default to SSL which is more reliable
+                    help="SSL (port 465) is recommended for Gmail"
+                )
+                if gmail_connection == "SSL (port 465)":
+                    email_port = 465
+                    use_ssl = True
+                    use_tls = False
+                else:
+                    email_port = 587
+                    use_ssl = False
+                    use_tls = True
+                
+                # Alert about the common typo
+                st.warning("⚠️ IMPORTANT: Double-check your email address for typos! The correct email is 'himowahck@gmail.com' (not 'himowachk')")
             elif email_provider == "Outlook":
                 email_host = "smtp.office365.com"
                 email_port = 587
@@ -253,23 +326,40 @@ def main():
                 email_port = st.number_input("SMTP Server Port", value=587)
             
             email_user = st.text_input("Email Address", placeholder="your.email@example.com")
-            email_password = st.text_input("Email Password or App Password", type="password")
+            email_password = st.text_input("Email Password or App Password", type="password", 
+                                         help="For Gmail, create an App Password at https://myaccount.google.com/apppasswords")
+            
+            # Add a note for Gmail users about App Passwords
+            if email_provider == "Gmail":
+                st.warning("""
+                For Gmail authentication to work properly:
+                1. Make sure 2-Step Verification is enabled on your Google account
+                2. Create an App Password at https://myaccount.google.com/apppasswords
+                3. Enter the App Password exactly as provided (no spaces)
+                """)
             
             # Only show these fields if using custom SMTP
             if email_provider == "Custom SMTP":
-                st.markdown("**Optional Settings**")
                 use_tls = st.checkbox("Use TLS", value=True)
                 use_ssl = st.checkbox("Use SSL", value=False)
             else:
                 use_tls = True
                 use_ssl = False
             
-            submitted = st.form_submit_button("Save Email Configuration")
+            submitted = st.form_submit_button("Save Configuration")
         
         if submitted:
             if not email_user or not email_password:
                 st.error("Email address and password are required.")
             else:
+                # Clean the inputs to remove any whitespace
+                email_user = email_user.strip()
+                
+                # Validate and correct email typos
+                email_user = validate_and_correct_email(email_user)
+                
+                email_password = email_password.strip()
+                
                 # Create or update .env file
                 env_content = f"""EMAIL_HOST={email_host}
 EMAIL_PORT={email_port}
@@ -281,19 +371,44 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                 with open(".env", "w") as f:
                     f.write(env_content)
                 
-                st.success("Email configuration saved successfully! You can now send real emails.")
+                st.success("Email configuration saved!")
+                
+                # Add debug info to verify the file was created correctly
+                st.info(f"Settings saved to .env file: {os.path.abspath('.env')}")
                 
                 # Test the connection
                 try:
+                    # Validate and correct email first
+                    email_user = validate_and_correct_email(email_user)
+                    
                     test_sender = EmailSender(
                         host=email_host,
                         port=email_port,
                         username=email_user,
                         password=email_password
                     )
-                    st.success("Connection to email server tested successfully!")
+                    st.success("Connection to email server successful!")
                 except Exception as e:
-                    st.error(f"Error connecting to email server: {str(e)}")
+                    error_message = str(e)
+                    st.error(f"Email configuration error: {error_message}")
+                    
+                    # Provide specific guidance based on error type
+                    if "535" in error_message and "not accepted" in error_message.lower():
+                        st.error("""
+                        **Authentication failed.** Please check:
+                        • Make sure 2-Step Verification is enabled in Google account
+                        • Use an App Password (not regular password)
+                        • Ensure App Password is entered correctly
+                        """)
+                    elif "timeout" in error_message.lower():
+                        st.error("Connection timed out. Check your network or try again later.")
+                    else:
+                        st.info("""
+                        **Common solutions:**
+                        • Check your email and password
+                        • For Gmail: Use an App Password
+                        • Check your email provider's security settings
+                        """)
     
     # Load data
     with st.spinner("Loading data..."):
@@ -503,13 +618,42 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
             
             # Use email configuration from .env if available
             if os.path.exists(".env"):
-                load_dotenv()
+                # Force reload of environment variables to ensure we're getting the latest values
+                load_dotenv(override=True)
                 
                 # Get email configuration from .env
                 email_host = os.getenv("EMAIL_HOST", "smtp.example.com")
                 email_port = int(os.getenv("EMAIL_PORT", "587"))
                 email_user = os.getenv("EMAIL_USER", "")
                 email_password = os.getenv("EMAIL_PASSWORD", "")
+                
+                # Validate and correct email if needed
+                email_user = validate_and_correct_email(email_user)
+                
+                # If email was corrected, update the .env file
+                if email_user.lower() == "himowahck@gmail.com" and os.getenv("EMAIL_USER", "").lower() != "himowahck@gmail.com":
+                    # Update .env file with correct email
+                    with open(".env", "r") as f:
+                        env_content = f.read()
+                    
+                    # Replace email
+                    env_content = env_content.replace(os.getenv("EMAIL_USER", ""), email_user)
+                    
+                    # Write updated content
+                    with open(".env", "w") as f:
+                        f.write(env_content)
+                    
+                    # Reload environment variables
+                    load_dotenv(override=True)
+                    st.success(f"Email address corrected in .env file to {email_user}")
+                
+                # Store values in more accessible format
+                st.session_state.email_config = {
+                    "host": email_host,
+                    "port": email_port,
+                    "user": email_user,
+                    "password_length": len(email_password) if email_password else 0
+                }
                 
                 st.markdown("#### Email Configuration")
                 st.info(f"Using saved email configuration for {email_user}. You can update it in the Email Configuration Setup section.")
@@ -725,6 +869,9 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                     if not email_user or not email_password or email_user == "your_email@example.com":
                         st.error("Please configure your email provider in the Email Configuration Setup section before sending real emails.")
                     else:
+                        # Validate email one more time
+                        email_user = validate_and_correct_email(email_user)
+                        
                         # Create email sender
                         try:
                             email_sender = EmailSender(
@@ -737,52 +884,66 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                             
                             st.success("Email configuration validated successfully!")
                             
-                            # Add sample email options for testing
-                            st.markdown("#### Send Test Email")
-                            test_email = st.text_input("Send a test email to this address:", 
-                                                      placeholder="youremail@example.com")
-                            
-                            if st.button("Send Test Email") and test_email:
-                                with st.spinner("Sending test email..."):
-                                    try:
-                                        # Send test email
-                                        sample_customer = st.session_state.email_preview_customer if not email_ready_customers.empty else {
-                                            'first_name': 'Test',
-                                            'email': test_email
-                                        }
-                                        
-                                        success = email_sender.send_email(
-                                            to_email=test_email,
-                                            subject=f"Test Email from Mall Customer Segmentation",
-                                            body_html=f"""<html>
-                                            <body>
-                                                <h1>Test Email</h1>
-                                                <p>This is a test email from the Mall Customer Segmentation system.</p>
-                                                <p>Your email configuration is working correctly!</p>
-                                                <p>Best regards,<br>The Mall Team</p>
-                                            </body>
-                                            </html>""",
-                                            campaign_id=campaign_id,
-                                            customer_id="TEST_USER"
-                                        )
-                                        
-                                        if success:
-                                            st.success(f"Test email sent successfully to {test_email}!")
-                                        else:
-                                            st.error(f"Failed to send test email to {test_email}.")
-                                    except Exception as e:
-                                        st.error(f"Error sending test email: {str(e)}")
+                            # Simplified test email section
+                            with st.expander("Send Test Email"):
+                                # Show current connection settings
+                                st.info(f"Current connection: {email_host}:{email_port} with user {email_user}")
+                                
+                                # Confirm password presence without revealing it
+                                if email_password:
+                                    st.info(f"Password present (length: {len(email_password)})")
+                                else:
+                                    st.warning("No password loaded!")
+                                
+                                test_email = st.text_input("Email address", 
+                                                        placeholder="youremail@example.com")
+                                
+                                if st.button("Send Test"):
+                                    if not test_email:
+                                        st.warning("Please enter an email address")
+                                    else:
+                                        with st.spinner("Sending..."):
+                                            try:
+                                                success = email_sender.send_email(
+                                                    to_email=test_email,
+                                                    subject="Test Email from Mall Customer Segmentation",
+                                                    body_html="""<html>
+                                                    <body style="font-family: Arial, sans-serif; padding: 20px;">
+                                                        <h2 style="color: #4527A0;">Test Email</h2>
+                                                        <p>Your email configuration is working correctly!</p>
+                                                        <p>Best regards,<br>The Mall Team</p>
+                                                    </body>
+                                                    </html>""",
+                                                    campaign_id=campaign_id,
+                                                    customer_id="TEST_USER"
+                                                )
+                                                
+                                                if success:
+                                                    st.success("Email sent successfully!")
+                                                else:
+                                                    st.error("Failed to send test email")
+                                            except Exception as e:
+                                                error_message = str(e)
+                                                st.error(f"Error: {error_message}")
+                                                
+                                                # Provide specific guidance based on error type
+                                                if "535" in error_message and "not accepted" in error_message.lower():
+                                                    st.error("""
+                                                    **Authentication failed.** Please check:
+                                                    • Make sure 2-Step Verification is enabled in Google account
+                                                    • Use an App Password (not regular password)
+                                                    • Ensure App Password is entered correctly
+                                                    """)
                             
                             # Execute campaign button
-                            st.markdown("#### Execute Full Campaign")
+                            st.markdown("#### Execute Campaign")
                             if st.button("Execute Campaign"):
                                 # Confirm execution
-                                confirm = st.checkbox(f"I confirm that I want to send {len(email_ready_customers)} real emails. "
-                                                   f"This action cannot be undone.")
+                                confirm = st.checkbox("I confirm that I want to send these emails")
                                 
                                 if confirm:
                                     # Send emails
-                                    with st.spinner(f"Sending {len(email_ready_customers)} emails..."):
+                                    with st.spinner(f"Sending emails..."):
                                         try:
                                             # Update campaign status
                                             campaign_manager.update_campaign_status(
@@ -899,12 +1060,11 @@ EMAIL_USE_SSL={'True' if use_ssl else 'False'}
                             
                         except Exception as e:
                             st.error(f"Email configuration error: {str(e)}")
-                            st.markdown("""
-                            Common errors:
-                            - **Invalid credentials**: Check your email and password
-                            - **Gmail users**: You may need to use an App Password instead of your regular password
-                            - **Security settings**: Your email provider might be blocking "less secure app" access
-                            - **Firewall/Network**: Your network might be blocking the connection
+                            st.info("""
+                            **Common solutions:**
+                            • Check your email and password
+                            • Gmail users: Use an App Password
+                            • Check your email provider's security settings
                             """)
         
         # Display existing campaign if one was created

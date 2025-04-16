@@ -1,2 +1,2 @@
 customer_id,id,email,first_name,last_name,age,gender,city,spending_score,annual_income,segment_name,primary_category,category,recency,frequency,monetary
-ad61375d-e637-466c-876b-efae82c0cc65,ad61375d-e637-466c-876b-efae82c0cc65,thesaddamsyed@gmail.com,Test,User,35,Male,Test City,80,75000,High Value,Electronics,Electronics,5,8,1200
+ad61375d-e637-466c-876b-efae82c0cc65,ad61375d-e637-466c-876b-efae82c0cc65,thesaddamsyed@gmail.com,saddam,User,35,Male,Test City,80,75000,VIP,Electronics,Electronics,5,8,1200
