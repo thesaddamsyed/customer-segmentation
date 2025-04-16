@@ -45,7 +45,8 @@ def create_segment_distribution_chart(segment_profiles: pd.DataFrame) -> go.Figu
             y=-0.1, 
             xanchor='center', 
             x=0.5,
-            font=dict(size=11)
+            font=dict(size=11),
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
         ),
         margin=dict(l=20, r=20, t=50, b=50)
     )
@@ -113,7 +114,8 @@ def create_segment_metrics_chart(segment_profiles: pd.DataFrame) -> go.Figure:
             y=-0.1, 
             xanchor='center', 
             x=0.5,
-            font=dict(size=11)
+            font=dict(size=11),
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
         ),
         margin=dict(l=40, r=40, t=50, b=70)
     )
@@ -153,7 +155,8 @@ def create_segment_pca_chart(pca_df: pd.DataFrame) -> go.Figure:
             y=-0.25, 
             xanchor='center', 
             x=0.5,
-            font=dict(size=11)
+            font=dict(size=11),
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
         ),
         margin=dict(l=40, r=40, t=50, b=80),
         autosize=True
@@ -795,7 +798,8 @@ def create_customer_location_map(customer_data):
             y=0.01, 
             xanchor='center', 
             x=0.5,
-            font=dict(size=11)
+            font=dict(size=11),
+            bgcolor='rgba(0,0,0,0)'  # Transparent background
         ),
         margin=dict(l=0, r=0, t=50, b=0),
         autosize=True

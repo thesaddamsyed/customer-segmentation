@@ -1,8 +1,9 @@
 import pandas as pd
 import os
 import uuid
+import sys
 
-# Create test_data directory if it doesn't exist
+# Create required directories
 os.makedirs("test_data", exist_ok=True)
 
 def create_test_customer(email):
@@ -48,6 +49,15 @@ def create_test_customer(email):
     return df
 
 if __name__ == "__main__":
-    # Replace with your email address
-    your_email = input("Enter your email address for testing: ")
+    if len(sys.argv) > 1:
+        # Use email from command line argument
+        your_email = sys.argv[1]
+    else:
+        # Ask for email interactively
+        your_email = input("Enter your email address for testing: ")
+    
+    if not your_email or '@' not in your_email:
+        print("Error: Please provide a valid email address")
+        sys.exit(1)
+        
     create_test_customer(your_email) 

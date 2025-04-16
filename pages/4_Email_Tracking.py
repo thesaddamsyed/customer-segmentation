@@ -361,6 +361,13 @@ def main():
                                     orientation='h'
                                 )
                                 
+                                # Add transparent legend background
+                                fig.update_layout(
+                                    legend=dict(bgcolor='rgba(0,0,0,0)'),
+                                    coloraxis_colorbar=dict(bgcolor='rgba(0,0,0,0)')
+                                )
+                                
+                                fig.update_traces(texttemplate='%{text}', textposition='outside')
                                 st.plotly_chart(fig, use_container_width=True)
         
         with tab2:

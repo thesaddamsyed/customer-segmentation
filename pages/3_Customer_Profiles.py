@@ -1222,6 +1222,11 @@ def main():
                     textinfo='percent+label'
                 )
                 
+                # Add transparent legend background
+                fig.update_layout(
+                    legend=dict(bgcolor='rgba(0,0,0,0)')
+                )
+                
                 st.plotly_chart(fig, use_container_width=True, key="category_pie_chart")
                 
                 # Display category preferences as a table
@@ -1269,6 +1274,11 @@ def main():
                     textinfo='percent+label'
                 )
                 
+                # Add transparent legend background
+                fig.update_layout(
+                    legend=dict(bgcolor='rgba(0,0,0,0)')
+                )
+                
                 st.plotly_chart(fig, use_container_width=True, key="category_pie_chart_precalc")
                 
                 # Display category preferences as a table
@@ -1306,6 +1316,11 @@ def main():
                     y=top_products.values,
                     title='Top Purchased Products',
                     labels={'x': 'Product', 'y': 'Purchase Count'}
+                )
+                
+                # Add transparent legend background
+                fig.update_layout(
+                    legend=dict(bgcolor='rgba(0,0,0,0)')
                 )
                 
                 st.plotly_chart(fig, use_container_width=True, key="top_products_chart")

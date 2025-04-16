@@ -228,7 +228,7 @@ def main():
         fig = create_segment_distribution_chart(segment_profiles)
         # Adjust legend position and size
         fig.update_layout(
-            legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='center', x=0.5),
+            legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='center', x=0.5, bgcolor='rgba(0,0,0,0)'),
             margin=dict(l=20, r=20, t=40, b=20),
             height=350
         )
@@ -239,7 +239,7 @@ def main():
         fig = create_segment_metrics_chart(segment_profiles)
         # Adjust legend position and size
         fig.update_layout(
-            legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='center', x=0.5),
+            legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='center', x=0.5, bgcolor='rgba(0,0,0,0)'),
             margin=dict(l=20, r=20, t=40, b=20),
             height=400
         )
@@ -251,7 +251,7 @@ def main():
     fig = create_segment_pca_chart(pca_df)
     # Adjust layout
     fig.update_layout(
-        legend=dict(orientation='h', yanchor='bottom', y=-0.2, xanchor='center', x=0.5),
+        legend=dict(orientation='h', yanchor='bottom', y=-0.2, xanchor='center', x=0.5, bgcolor='rgba(0,0,0,0)'),
         margin=dict(l=20, r=20, t=40, b=80),  # More bottom margin for legend
         height=450
     )
