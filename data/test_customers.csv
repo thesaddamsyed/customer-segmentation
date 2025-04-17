@@ -1,12 +1,4 @@
 customer_id,email,first_name,last_name,segment_name,primary_category,age,gender,city,last_purchase_date,total_spent
 d204ca4d,thesaddamsyed@gmail.com,saddam,syed,Occasional,electronics,30,Male,badvel,2025-04-16,100.0
-670a78fc,linda.johnson@outlook.com,Linda,Johnson,Occasional,electronics,62,Female,San Jose,2025-02-15,520.79
-3ffe0fa1,feriviv436@clubemp.com,Mary,Rodriguez,Regular,electronics,29,Male,Los Angeles,2025-04-10,595.35
 2759eaec,iamsaddam635@gmail.com,William,Jones,Regular,electronics,57,Male,Los Angeles,2025-03-02,338.21
-ce727b46,cirime8863@ptiong.com,Elizabeth,Williams,VIP,electronics,45,Male,Dallas,2025-02-25,613.95
-f419c5dd,michael.jones@gmail.com,Michael,Jones,VIP,clothing,53,Male,San Diego,2025-02-24,232.15
-90bbea0f,patricia.jones@hotmail.com,Patricia,Jones,New,home_kitchen,35,Female,Los Angeles,2025-02-21,129.86
-7e927b76,john.williams@yahoo.com,John,Williams,Regular,home_kitchen,59,Male,San Jose,2025-04-06,188.55
-b9347f74,mary.williams@hotmail.com,Mary,Williams,Occasional,electronics,47,Female,Houston,2025-03-08,657.88
-9cc988bc,robert.jones@yahoo.com,Robert,Jones,VIP,electronics,37,Female,Phoenix,2025-02-25,326.77
-708edcc3,james.smith@outlook.com,James,Smith,Occasional,electronics,38,Female,San Diego,2025-03-07,621.76
+2759ebac,bandaruvenkateswarlu74@gmail.com,William,Jones,Regular,electronics,57,Male,Los Angeles,2025-03-02,338.21
